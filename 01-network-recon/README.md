@@ -73,9 +73,7 @@ This project requires **Python 3.6+** (for f-string formatting support). No exte
 ```bash
 git clone https://github.com/SuryanshOps/python-security-automation.git
 cd python-security-automation
-cd 03-cryptography 
-
-cd simple-port-scanner
+cd 01-network-recon
 ```
 
 **2. Execute the script:**
