@@ -78,7 +78,7 @@ cd 01-network-recon
 
 **2. Execute the script:**
 ```bash
-python3 port_scanner.py
+python3 simple_port_scanner.py
 ```
 
 **Example Standard Output:**
