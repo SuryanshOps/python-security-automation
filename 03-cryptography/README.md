@@ -57,9 +57,9 @@ The `hashlib` library offers two methods to output the final cryptographic math.
 | **Readability** | Unreadable; breaks terminal formatting with unprintable symbols | Clean, human-readable, and copy-pasteable |
 | **Primary Use Case** | Storing compactly in databases, or passing to another cryptographic function | Printing to terminals, writing to log files, or manual human verification |
 
-### Space Complexity & Memory Constraints ($O(N)$ Space)
+### Space Complexity & Memory Constraints (O(N) Space)
 Currently, the script utilizes `file.read()`, which pulls the *entire* file into system RAM before feeding it to the `hasher.update()` function. 
-*   **Trade-off:** For a small configuration file (like `system_config.txt`), this is fast, simple, and completely acceptable. However, if tasked with hashing a 50 GB database backup, this architecture would trigger a memory exhaustion error (RAM overflow) and crash the system. Scaling this tool for enterprise use requires addressing this $O(N)$ memory constraint.
+*   **Trade-off:** For a small configuration file (like `system_config.txt`), this is fast, simple, and completely acceptable. However, if tasked with hashing a 50 GB database backup, this architecture would trigger a memory exhaustion error (RAM overflow) and crash the system. Scaling this tool for enterprise use requires addressing this memory constraint.
 
 ---
 
@@ -135,7 +135,7 @@ except FileNotFoundError:
 
 As my understanding of computer science and software architecture deepens, I plan to expand this foundational script into a more robust monitoring daemon:
 
-1.  **Memory-Optimized Chunking:** To solve the $O(N)$ memory constraint mentioned in the engineering analysis, I plan to refactor `file.read()` into a `while` loop that reads the file in 4KB chunks (`file.read(4096)`). This will achieve an $O(1)$ space complexity, allowing the tool to securely hash infinitely large files (like ISOs or virtual machine disks) without crashing system RAM.
+1.  **Memory-Optimized Chunking:** To solve the memory constraint mentioned in the engineering analysis, I plan to refactor `file.read()` into a `while` loop that reads the file in 4KB chunks (`file.read(4096)`). This will achieve a constant space complexity, allowing the tool to securely hash infinitely large files (like ISOs or virtual machine disks) without crashing system RAM.
 2.  **Automated Baseline Verification:** Instead of manually comparing the old hash to the new hash by staring at the terminal, I plan to have the script save the initial hash into a hidden `.json` file. On subsequent runs, the script will automatically compare the current hash against the stored baseline and print a red `ALERT: TAMPERING DETECTED` or a green `VERIFIED OK` message.
 3.  **Command Line Interface (CLI):** Integrating Python's `argparse` to allow users to hash any file dynamically via terminal arguments (e.g., `python3 integrity_monitor.py -f /etc/passwd`).
 
@@ -148,5 +148,6 @@ The Cryptographic File Integrity Monitor bridges theoretical cryptography and ap
 <br>
 
 <div align="center">
-  <em>Developed by SuryanshOps</em>
+<em>Developed by SuryanshOps</em>
 </div>
+
