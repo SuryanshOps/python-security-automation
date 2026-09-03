@@ -80,6 +80,8 @@ echo "Database_Port=5432" > system_config.txt
 ```bash
 python3 integrity_monitor.py
 ```
+*(Note: If you are on Windows, use `python` instead of `python3`)*
+
 *Output:*
 ```text
 Calculating fingerprint for: system_config.txt
