@@ -16,9 +16,9 @@
 
 ## Executive Summary
 
-The **Simple Python Port Scanner (SPPS)** is a lightweight, dependency-free network utility designed to identify open TCP ports on a host system. Built entirely using Python's standard library, this project serves as a practical application of computer science concepts, specifically focusing on network engineering, socket programming, and system-level I/O operations. 
+The **Simple Python Port Scanner (SPPS)** is a lightweight, dependency-free network utility designed to identify open TCP ports on a host system. Built entirely using Python's standard library, this project serves as a practical application of foundational computer science concepts, specifically focusing on network engineering, socket programming, and system-level I/O operations. 
 
-By avoiding third-party libraries, the project demonstrates a foundational understanding of how operating systems handle network traffic and resource allocation at the socket level.
+By avoiding third-party libraries, the project demonstrates a core understanding of how operating systems handle network traffic, exception handling, and resource allocation at the socket level.
 
 ---
 
@@ -31,11 +31,11 @@ By avoiding third-party libraries, the project demonstrates a foundational under
 
 ## Technical Architecture
 
-### 1. Transport Layer Operations (Layer 4)
-This application operates at the Transport Layer of the OSI (Open Systems Interconnection) model. It utilizes the **Transmission Control Protocol (TCP)**, which is connection-oriented and guarantees the delivery and correct ordering of data packets.
+### 1. TCP vs. UDP Protocol 
+This application focuses exclusively on **TCP (Transmission Control Protocol)** rather than UDP. TCP is a connection-oriented protocol, meaning it requires a strict handshake to establish communication. This makes TCP ideal for port scanning: if the target completes the handshake, we know with 100% certainty that the port is open and listening. (UDP, by contrast, is "fire and forget," meaning an open UDP port often won't send any reply at all).
 
 ### 2. The TCP Three-Way Handshake
-To determine the state of a network service, the script initiates a stateful connection rather than a simple ICMP ping. The underlying operating system handles the following sequence:
+To determine the state of a network service, the script utilizes the OS to perform the following sequence:
 
 | Step | Packet | Sender | Description |
 | :--- | :--- | :--- | :--- |
@@ -45,22 +45,23 @@ To determine the state of a network service, the script initiates a stateful con
 
 ### 3. Socket Programming Interface
 The script interfaces with the OS network stack using Berkeley-style sockets:
-*   `AF_INET`: Configures the socket to route over IPv4 addressing architecture.
-*   `SOCK_STREAM`: Instructs the operating system to instantiate a TCP socket and natively manage the three-way handshake sequence.
+*   `AF_INET`: Configures the socket to route over the standard IPv4 addressing architecture.
+*   `SOCK_STREAM`: Instructs the operating system to instantiate a TCP socket and natively manage the three-way handshake sequence described above.
 
 ---
 
 ## Engineering Analysis & Trade-offs
 
-### Time Complexity & Performance
-In its current iteration, the application processes ports sequentially in a single thread, resulting in a time complexity of **$O(n)$**, where *n* is the number of ports scanned. 
-*   **The Firewall Problem:** If a network firewall drops packets silently, the scanner must wait for the connection attempt to time out. 
-*   **The Solution:** A strict `1.0` second timeout is enforced via `s.settimeout(1.0)`. While this prevents indefinite hanging, scanning 1,000 silently dropped ports still takes ~16 minutes. This highlights the architectural necessity of concurrent programming for network-bound I/O tasks.
+### Resource Management (The `with` Statement)
+Operating systems impose strict limits on how many files or network sockets a program can have open simultaneously. In this script, the socket is wrapped in a Python context manager (`with socket.socket(...) as s:`). This guarantees that the network socket is instantly closed and destroyed the moment the port check is finished, preventing resource exhaustion and memory leaks during the loop.
 
-### Connection Method: `connect_ex()` vs Raw Sockets
-The script utilizes the `connect_ex()` method instead of standard raw sockets.
-*   **Advantage (Safety & Portability):** It does not require elevated (root/administrator) privileges to execute, ensuring the script runs safely in standard user-space across Windows, macOS, and Linux. Furthermore, it returns a C-level integer status code (0 for success) rather than raising blocking exceptions, allowing for cleaner control flow.
-*   **Trade-off:** Because it completes a full TCP connection, it generates standard connection logs on the target server, making it less stealthy than raw-socket SYN scanning.
+### Exception Handling & User Experience
+Standard port scanners can take a long time to run. If a user tries to cancel a standard Python script by pressing `Ctrl+C`, the terminal will usually throw a massive, ugly `KeyboardInterrupt` error trace. This project actively catches that interrupt, safely stops the scan, and prints a clean exit message.
+
+### Time Complexity & Performance
+In its current iteration, the application processes ports sequentially in a single thread. 
+*   **The Firewall Problem:** If a network firewall drops packets silently, the scanner must wait for the connection attempt to time out. 
+*   **The Solution:** A strict `1.0` second timeout is enforced via `s.settimeout(1.0)`. While this prevents the script from hanging indefinitely, scanning thousands of silently dropped ports would still take a long time. This highlights a clear engineering trade-off: keeping the code simple and readable versus optimizing for maximum speed.
 
 ---
 
@@ -134,17 +135,17 @@ except KeyboardInterrupt:
 
 ## Future Enhancements
 
-Software applications are continuously improved. The following features are planned to expand the capabilities and performance of this tool:
+Software applications are continuously improved. The following features are planned to expand the capabilities and performance of this tool as my programming skills advance:
 
 1.  **Multithreading:** Adding concurrent execution so the program can check multiple ports at the exact same time, reducing scan times significantly.
 2.  **Service Identification (Banner Grabbing):** Allowing the scanner to not only see if a port is open, but actually identify what specific software is running on it (e.g., detecting if port 80 is running Apache or Nginx).
-3.  **Command Line Interface (CLI):** Updating the code to accept terminal arguments (like `-p` for ports or `-t` for target), so users don't have to hardcode the IP address into the script every time.
+3.  **Command Line Interface (CLI):** Updating the code to accept terminal arguments (like `-p` for custom port ranges or `-t` for the target IP), so users don't have to hardcode the IP address into the script every time.
 
 ---
 
 ## Conclusion
 
-This Simple Python Port Scanner serves as a practical demonstration of core networking concepts and Python system programming. By leveraging native socket operations and prioritizing clean exception handling, the project provides a reliable, lightweight tool for local network auditing. It successfully establishes a foundation for building more complex, highly scalable cybersecurity applications in the future.
+This Simple Python Port Scanner serves as a practical demonstration of core networking concepts and Python system programming. By leveraging native socket operations, managing system resources responsibly, and prioritizing clean exception handling, the project provides a reliable, lightweight tool for local network auditing. It successfully establishes a solid coding foundation for building more complex, highly scalable computer science applications in the future.
 
 <br>
 
