@@ -71,7 +71,10 @@ This project requires **Python 3.6+** (for f-string formatting support). No exte
 
 **1. Clone the repository:**
 ```bash
-git clone [https://github.com/yourusername/simple-port-scanner.git](https://github.com/yourusername/simple-port-scanner.git)
+git clone https://github.com/SuryanshOps/python-security-automation.git
+cd python-security-automation
+cd 03-cryptography 
+
 cd simple-port-scanner
 ```
 
