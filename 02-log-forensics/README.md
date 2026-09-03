@@ -68,7 +68,9 @@ This project requires **Python 3.6+** (for f-string formatting). No external lib
 
 **1. Clone the repository & create a dummy log file:**
 ```bash
-git clone [https://github.com/yourusername/simple-log-analyzer.git](https://github.com/yourusername/simple-log-analyzer.git)
+git clone https://github.com/SuryanshOps/python-security-automation.git
+cd python-security-automation
+cd 02-log-forensics
 cd simple-log-analyzer
 
 # Create a sample log file to test the script
@@ -79,7 +81,7 @@ echo "Feb 23 12:15:10 server sshd: Failed password for admin from 198.51.100.22 
 
 **2. Execute the script:**
 ```bash
-python3 log_analyzer.py
+python3 auth-log-parser.py
 ```
 
 **Example Standard Output:**
