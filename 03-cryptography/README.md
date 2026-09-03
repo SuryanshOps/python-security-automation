@@ -69,9 +69,9 @@ This project requires **Python 3.6+**. No external libraries are required, as `h
 
 **1. Clone the repository & create a dummy target file:**
 ```bash
-git clone https://github.com/SuryanshOps/simple-file-integrity.git
+git clone https://github.com/SuryanshOps/python-security-automation.git
 
-cd simple-file-integrity
+cd 03-cryptography 
 
 # Create a clean configuration file
 echo "Database_Port=5432" > system_config.txt
@@ -79,7 +79,7 @@ echo "Database_Port=5432" > system_config.txt
 
 **2. Execute the script to establish a baseline:**
 ```bash
-python3 integrity_monitor.py
+python3 file-integrity-checker.py
 ```
 *(Note: If you are on Windows, use `python` instead of `python3`)*
 
