@@ -46,6 +46,17 @@ A deliberate engineering choice in this script is opening the file in **Read-Bin
 *   **The Problem:** Different operating systems handle text formatting differently. For example, Windows uses `CRLF` (Carriage Return + Line Feed) for line breaks, while Linux/macOS uses `LF`. If read in text mode, Python might interpret or translate these characters, altering the data fed to the hasher and resulting in a false-positive mismatch across operating systems.
 *   **The Solution:** Binary mode bypasses OS-level text formatting entirely. It reads the raw 1s and 0s directly from the physical storage disk. This guarantees that a file hashed on a Linux server will output the exact same fingerprint if transferred to a Windows machine, ensuring cross-platform reliability.
 
+### Data Formatting: `.digest()` vs `.hexdigest()`
+The `hashlib` library offers two methods to output the final cryptographic math. Both contain the exact same data, but format it for different audiences (computers vs. humans). This script explicitly uses `.hexdigest()` to ensure the output is human-readable and terminal-safe.
+
+| Feature | `.digest()` | `.hexdigest()` (Used in this project) |
+| :--- | :--- | :--- |
+| **Data Type** | Raw bytes (`bytes` object) | Text string (`str` object) |
+| **Visual Output** | `b'\x2c\x26\xb4\x6b\x68\xff...'` | `'2c26b46b68ff...'` |
+| **Length (SHA-256)** | 32 bytes | 64 characters *(2 hex chars per byte)* |
+| **Readability** | Unreadable; breaks terminal formatting with unprintable symbols | Clean, human-readable, and copy-pasteable |
+| **Primary Use Case** | Storing compactly in databases, or passing to another cryptographic function | Printing to terminals, writing to log files, or manual human verification |
+
 ### Space Complexity & Memory Constraints ($O(N)$ Space)
 Currently, the script utilizes `file.read()`, which pulls the *entire* file into system RAM before feeding it to the `hasher.update()` function. 
 *   **Trade-off:** For a small configuration file (like `system_config.txt`), this is fast, simple, and completely acceptable. However, if tasked with hashing a 50 GB database backup, this architecture would trigger a memory exhaustion error (RAM overflow) and crash the system. Scaling this tool for enterprise use requires addressing this $O(N)$ memory constraint.
@@ -132,7 +143,7 @@ As my understanding of computer science and software architecture deepens, I pla
 
 ## Conclusion
 
-The Cryptographic File Integrity Monitor bridges theoretical cryptography and applied systems engineering. By leveraging the SHA-256 algorithm, enforcing strict binary I/O handling for cross-platform stability, and utilizing the mathematical properties of the Avalanche Effect, this project demonstrates a concrete understanding of how data integrity is programmatically enforced in modern computing environments. 
+The Cryptographic File Integrity Monitor bridges theoretical cryptography and applied systems engineering. By leveraging the SHA-256 algorithm, enforcing strict binary I/O handling for cross-platform stability, properly formatting data outputs for human interaction, and utilizing the mathematical properties of the Avalanche Effect, this project demonstrates a concrete understanding of how data integrity is programmatically enforced in modern computing environments. 
 
 <br>
 
