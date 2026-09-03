@@ -70,7 +70,7 @@ This project requires **Python 3.6+**. No external libraries are required, as `h
 **1. Clone the repository & create a dummy target file:**
 ```bash
 git clone https://github.com/SuryanshOps/python-security-automation.git
-
+cd python-security-automation
 cd 03-cryptography 
 
 # Create a clean configuration file
