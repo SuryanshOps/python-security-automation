@@ -69,7 +69,7 @@ This project requires **Python 3.6+**. No external libraries are required, as `h
 
 **1. Clone the repository & create a dummy target file:**
 ```bash
-git clone [https://github.com/yourusername/simple-file-integrity.git](https://github.com/yourusername/simple-file-integrity.git)
+git clone [https://github.com/SuryanshOps/simple-file-integrity.git](https://github.com/SuryanshOps/simple-file-integrity.git)
 cd simple-file-integrity
 
 # Create a clean configuration file
@@ -150,4 +150,3 @@ The Cryptographic File Integrity Monitor bridges theoretical cryptography and ap
 <div align="center">
 <em>Developed by SuryanshOps</em>
 </div>
-
