@@ -1,4 +1,4 @@
-<div align="center">
+<div align="center"> , 
   
   # 🐍 Python Security Automation
   **Cybersecurity & Scripting Hub** | Technical blueprint index mapped for network reconnaissance, forensic log parsing, and cryptographic asset verification.
